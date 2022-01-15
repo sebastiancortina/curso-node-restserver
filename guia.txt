@@ -1,0 +1,7 @@
+1. Iniciamos el proyecto: 
+
+npm init -y 
+
+2. Instalamos el servidor local y instalamos dotenv para configurar las variables de entorno
+
+npm i express dotenv

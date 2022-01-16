@@ -1,5 +1,7 @@
 const { response, request } = require('express');
 
+const Usuario = require('../models/usuario');
+
 
 const usuarioGet = (req = request, res = response ) => {
     
@@ -16,16 +18,22 @@ const usuarioGet = (req = request, res = response ) => {
     });
 }
 
-const usuarioPost = (req, res = response ) => {
+const usuarioPost = async (req, res = response ) => {
 
     // Se resibe la informacion riques
-    const { nombre, edad } = req.body;
+    //const { nombre, edad } = req.body;
+
+    // se crea la instancia para mandar la informacion a mogoDB
+    const body = req.body;
+    const usuario = new Usuario( body );
+
+    // Se graba la informacion en la base de datos 
+    await usuario.save();
 
 
     res.json( {
         msg:"post api",
-        nombre,
-        edad
+        usuario
     });
 }
 

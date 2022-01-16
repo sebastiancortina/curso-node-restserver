@@ -1,6 +1,7 @@
 // creo el restserver
 const express = require('express');
 const cors = require('cors');
+const { dbConnection } = require('../database/config');
 
 
 class Server{
@@ -9,10 +10,18 @@ class Server{
         this.app = express();
         this.port = process.env.PORT;
         this.usuarioPath = '/api/usuarios';
+
+        // Conectar a la base de datos
+        this.conectarDB();
+
         // Middleware - funciones que agrega otra funcionalidad a mis funciones a mi Webserver
         this.middleware();
         // Rutas de mi aplicacion 
         this.routes();
+    }
+
+    async conectarDB(){
+        await dbConnection();
     }
 
     middleware(){

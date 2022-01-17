@@ -34,6 +34,12 @@ const UsuarioSchema = Schema ({
 
 });
 
+// Sobreescribimos el metodo toJSON 
+UsuarioSchema.methods.toJSON = function(){
+    const {__v, password, ...usuario } = this.toObject();
+    return usuario;
+} 
+
 // exportamos el nombre de la colecion y el esquema con la funcion del model
 module.exports = model('Usuarios', UsuarioSchema);
 

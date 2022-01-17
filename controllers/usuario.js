@@ -1,6 +1,8 @@
 const { response, request } = require('express');
-
+const bcryptjs = require('bcryptjs');  // libreria para sifrar la contraseña
 const Usuario = require('../models/usuario');
+
+
 
 
 const usuarioGet = (req = request, res = response ) => {
@@ -24,15 +26,26 @@ const usuarioPost = async (req, res = response ) => {
     //const { nombre, edad } = req.body;
 
     // se crea la instancia para mandar la informacion a mogoDB
-    const body = req.body;
-    const usuario = new Usuario( body );
+    const { nombre, correo, password, rol } = req.body;
+    const usuario = new Usuario( { nombre, correo, password, rol } );
+
+    // Verifica si el correo existe - npm i express-validator es una coleccion de Middleware
+    const existeEmail = await Usuario.findOne({ correo });
+    if ( existeEmail){
+        return res.status(400).json({
+            msg: 'Ese correo ya esta registrado'
+        });
+    }
+
+    // Sifra la contraseña 
+    const salt = bcryptjs.genSaltSync();
+    usuario.password = bcryptjs.hashSync(password, salt);
 
     // Se graba la informacion en la base de datos 
     await usuario.save();
 
 
     res.json( {
-        msg:"post api",
         usuario
     });
 }

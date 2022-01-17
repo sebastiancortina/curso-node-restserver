@@ -29,15 +29,7 @@ const usuarioPost = async (req, res = response ) => {
     const { nombre, correo, password, rol } = req.body;
     const usuario = new Usuario( { nombre, correo, password, rol } );
 
-    // Verifica si el correo existe - npm i express-validator es una coleccion de Middleware
-    const existeEmail = await Usuario.findOne({ correo });
-    if ( existeEmail){
-        return res.status(400).json({
-            msg: 'Ese correo ya esta registrado'
-        });
-    }
-
-    // Sifra la contraseña 
+    // Cifra la contraseña 
     const salt = bcryptjs.genSaltSync();
     usuario.password = bcryptjs.hashSync(password, salt);
 
@@ -50,13 +42,23 @@ const usuarioPost = async (req, res = response ) => {
     });
 }
 
-const usuarioPut = (req, res = response ) => {
+const usuarioPut = async (req, res = response ) => {
 
-    const id = req.params.id;
+   const { id } = req.params;
+   const { _id, password, google, correo, ...resto } = req.body;
+
+   // Todo validar contra base de datos 
+   if( password ){
+       // Cifra la contraseña 
+       const salt = bcryptjs.genSaltSync();
+       resto.password = bcryptjs.hashSync(password, salt);
+   }
+
+   const usuario = await Usuario.findByIdAndUpdate( id, resto );
 
     res.json( {
         msg:"put api",
-        id
+        usuario
     });
 }
 

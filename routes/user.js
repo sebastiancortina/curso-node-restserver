@@ -4,20 +4,29 @@ const { usuarioGet, usuarioPut, usuarioPost, usuarioDelete } = require('../contr
 // coleccion de Mi
 const { check } = require('express-validator');
 const { validarCampos } = require('../middlewares/validar-campos');
-const { esRoleValido } = require('../helpers/db-validators');
+const { esRoleValido, emailExists, existeUsuarioPorId } = require('../helpers/db-validators');
 
 const router = Router();
 
 // Mandamos un objetos
 router.get('/', usuarioGet);
 
-router.put('/:id', usuarioPut);
+const prueba = (req) => {
+
+    console.log('hola'+req);
+};
+
+router.put('/:id', [
+    check('id', 'No es un id valido').isMongoId(),
+    check('id').custom(existeUsuarioPorId),
+    validarCampos
+],usuarioPut);
 
 router.post('/', [
     // permite revizar algun campo de la coleccion
     check('nombre', 'El nombre es obligatorio').not().isEmpty(),    // permite verificar si el campo esta vacio
     check('password', 'El password es obligatorio y debe ser mas de 6 caracteres').isLength({ min: 6 }), // permite validar si el campo tiene mas de 6 caracteres 
-    check('correo', 'El correo no es valido ').isEmail(), // permite verificar si el correo esta correcto 
+    check('correo').custom(emailExists).isEmail(), // permite verificar si el correo esta correcto 
     //check('rol', 'No es un rol valido').isIn(['ADMIN_ROLE','USER_ROLE']),  // permite validar si es un usuario ADMIN_ROLE o USER_ROLE
     check('rol').custom(esRoleValido),  // Permite validar un rol exitente en la base de datos 
     validarCampos
@@ -30,6 +39,8 @@ router.patch('/', (req, res) => {
         msg:"patch api"
     });
 });
+
+
 
 
 

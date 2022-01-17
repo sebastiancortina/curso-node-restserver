@@ -1,4 +1,6 @@
+
 const Role = require('../models/role'); // colecion de rol 
+const Usuario = require('../models/usuario');
 
 // Permite validar un rol exitente en la base de datos 
 const esRoleValido = async(rol = '') => {                 
@@ -8,7 +10,27 @@ const esRoleValido = async(rol = '') => {
     }
 }
 
+ // Verifica si el correo existe - npm i express-validator es una coleccion de Middleware
+const emailExists = async( correo = '' ) => {
+    const existeEmail = await Usuario.findOne({ correo });
+    console.log('iojhoj');
+    if ( existeEmail){
+        throw new Error(`El correo: ${ correo }, ya esta registrado` );
+    }
+}
+
+const existeUsuarioPorId = async(id) => {
+    // Verifica si exite el correo 
+    const existeUsuario = await Usuario.findById(id);
+    
+    if (!existeUsuario){
+        throw new Error(`El id no exite ${ id }`);
+    }
+}
+
 
 module.exports = {
-    esRoleValido
+    esRoleValido,
+    emailExists, 
+    existeUsuarioPorId
 }

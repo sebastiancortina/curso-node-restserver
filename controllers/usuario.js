@@ -12,14 +12,26 @@ const usuarioGet = async (req = request, res = response ) => {
     
     // desetructuramos con las variable limit para mostrar un limite de datos 
     const { limite = 5, desde = 0 } = req.query;
+    const query = { estado: true};
+
     // mandamos un limite de datos a mostrar 
-    const usuarios = await Usuario.find()
+    /*const usuarios = await Usuario.find(query)
         .skip(Number( desde ))
-        .limit(Number(limite));
+        .limit(Number(limite));*/
+    // Muestra la cantidad de datos en la base de datos 
+    //const total = await Usuario.countDocuments(query);
+
+    const [ total, usuarios ] = await Promise.all([
+        Usuario.countDocuments(query),
+        Usuario.find(query)
+            .skip(Number(desde))
+            .limit(Number(limite))
+    ]);
 
 
     res.json( {
-       usuarios 
+       total,
+       usuarios
     });
 }
 
@@ -68,10 +80,16 @@ const usuarioPath = (req, res = response ) => {
     });
 }
 
-const usuarioDelete = (req, res = response ) => { 
-    res.json( {
-        msg:"delete api"
-    });
+const usuarioDelete =  async (req, res = response ) => { 
+    const { id } = req.params;
+    
+    // fisicamente lo borramos
+    //const usuario = await Usuario.findByIdAndDelete( id );
+
+    const usuario = await Usuario.findByIdAndUpdate( id, { estado: false});
+    
+    // muestra el usuaria borrado 
+    res.json( usuario );
 }
 
 

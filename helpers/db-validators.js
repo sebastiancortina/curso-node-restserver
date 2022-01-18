@@ -13,14 +13,14 @@ const esRoleValido = async(rol = '') => {
  // Verifica si el correo existe - npm i express-validator es una coleccion de Middleware
 const emailExists = async( correo = '' ) => {
     const existeEmail = await Usuario.findOne({ correo });
-    console.log('iojhoj');
+    //console.log('iojhoj');
     if ( existeEmail){
         throw new Error(`El correo: ${ correo }, ya esta registrado` );
     }
 }
 
 const existeUsuarioPorId = async(id) => {
-    // Verifica si exite el correo 
+    // Verifica si exite el id exite 
     const existeUsuario = await Usuario.findById(id);
     
     if (!existeUsuario){

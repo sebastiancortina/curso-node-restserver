@@ -19,6 +19,7 @@ const prueba = (req) => {
 router.put('/:id', [
     check('id', 'No es un id valido').isMongoId(),
     check('id').custom(existeUsuarioPorId),
+    check('rol').custom(esRoleValido),
     validarCampos
 ],usuarioPut);
 

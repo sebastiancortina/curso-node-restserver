@@ -42,7 +42,3 @@ UsuarioSchema.methods.toJSON = function(){
 
 // exportamos el nombre de la colecion y el esquema con la funcion del model
 module.exports = model('Usuarios', UsuarioSchema);
-
-
-
-

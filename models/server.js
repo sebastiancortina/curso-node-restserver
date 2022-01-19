@@ -16,6 +16,7 @@ class Server{
 
         // Middleware - funciones que agrega otra funcionalidad a mis funciones a mi Webserver
         this.middleware();
+        
         // Rutas de mi aplicacion 
         this.routes();
     }

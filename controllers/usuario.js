@@ -96,7 +96,6 @@ const usuarioDelete =  async (req, res = response ) => {
 module.exports = {
     usuarioGet,
     usuarioPost,
-    
     usuarioPut,
     usuarioPath,
     usuarioDelete

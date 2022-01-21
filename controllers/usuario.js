@@ -83,13 +83,14 @@ const usuarioPath = (req, res = response ) => {
 const usuarioDelete =  async (req, res = response ) => { 
     const { id } = req.params;
     
+    const uid = req.uid;
     // fisicamente lo borramos
     //const usuario = await Usuario.findByIdAndDelete( id );
 
     const usuario = await Usuario.findByIdAndUpdate( id, { estado: false});
     
     // muestra el usuaria borrado 
-    res.json( usuario );
+    res.json( {usuario, uid} );
 }
 
 

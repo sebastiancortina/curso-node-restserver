@@ -5,6 +5,7 @@ const { usuarioGet, usuarioPut, usuarioPost, usuarioDelete } = require('../contr
 const { check } = require('express-validator');
 const { validarCampos } = require('../middlewares/validar-campos');
 const { esRoleValido, emailExists, existeUsuarioPorId } = require('../helpers/db-validators');
+const { validarJWT } = require('../middlewares/validar-jwt');
 
 const router = Router();
 
@@ -32,23 +33,19 @@ router.post('/', [
     check('rol').custom(esRoleValido),  // Permite validar un rol exitente en la base de datos 
     validarCampos
 ], usuarioPost);
-
-router.delete('/:id',
+//-----------------------------------------
+router.delete('/:id',[
+    validarJWT,
     check('id', 'No es un id valido').isMongoId(),   
     check('id').custom(existeUsuarioPorId),
-    validarCampos,
+    validarCampos],
     usuarioDelete);
-
+//-----------------------------
 router.patch('/', (req, res) => {
     res.status(403).json( {
         msg:"patch api"
     });
 });
-
-
-
-
-
 
 
 module.exports = router;

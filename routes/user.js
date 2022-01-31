@@ -3,10 +3,10 @@ const { Router } = require('express');
 const { usuarioGet, usuarioPut, usuarioPost, usuarioDelete } = require('../controllers/usuario');
 // coleccion de Mi
 const { check } = require('express-validator');
-const { validarCampos } = require('../middlewares/validar-campos');
 const { esRoleValido, emailExists, existeUsuarioPorId } = require('../helpers/db-validators');
-const { validarJWT } = require('../middlewares/validar-jwt');
-const { esAdminRole } = require('../middlewares/validar-roles');
+
+const { validarCampos, validarJWT, esAdminRole, tieneRole } = require('../middlewares')
+
 
 const router = Router();
 
@@ -18,6 +18,7 @@ const prueba = (req) => {
     console.log('hola'+req);
 };
 
+//------------------- PUT --------------------
 router.put('/:id', [
     check('id', 'No es un id valido').isMongoId(),
     check('id').custom(existeUsuarioPorId),
@@ -25,6 +26,7 @@ router.put('/:id', [
     validarCampos
 ],usuarioPut);
 
+//------------------- POST --------------------------------
 router.post('/', [
     // permite revizar algun campo de la coleccion
     check('nombre', 'El nombre es obligatorio').not().isEmpty(),    // permite verificar si el campo esta vacio
@@ -34,15 +36,18 @@ router.post('/', [
     check('rol').custom(esRoleValido),  // Permite validar un rol exitente en la base de datos 
     validarCampos
 ], usuarioPost);
-//-----------------------------------------
+
+//------------------- DELETE --------------------------------
 router.delete('/:id',[
     validarJWT,
-   // esAdminRole,
+    esAdminRole,
+    tieneRole('ADMIN_ROLE','A' ),
     check('id', 'No es un id valido').isMongoId(),   
     check('id').custom(existeUsuarioPorId),
     validarCampos],
     usuarioDelete);
-//-----------------------------
+
+//-------------------- PATCH -----------------------------------
 router.patch('/', (req, res) => {
     res.status(403).json( {
         msg:"patch api"

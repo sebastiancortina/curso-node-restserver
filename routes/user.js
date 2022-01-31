@@ -40,8 +40,13 @@ router.post('/', [
 //------------------- DELETE --------------------------------
 router.delete('/:id',[
     validarJWT,
+<<<<<<< HEAD
     esAdminRole,
     tieneRole('ADMIN_ROLE','A' ),
+=======
+   // esAdminRole,
+    tieneRole('ADMIN_ROLE','VENTA_ROLE'),
+>>>>>>> 733bc57aaf60e44a6326da394e01cae4777a85df
     check('id', 'No es un id valido').isMongoId(),   
     check('id').custom(existeUsuarioPorId),
     validarCampos],

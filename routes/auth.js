@@ -13,4 +13,10 @@ router.post('/login', [
 ],login);
 
 
+router.post('/google', [
+    check('id_token', 'id_token de google es necesario').not().isEmpty(),
+    validarCampos
+],login);
+
+
 module.exports = router;

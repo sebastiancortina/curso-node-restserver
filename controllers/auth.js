@@ -49,7 +49,7 @@ const login = async (req, res = response ) => {
     }
 }
 
-const googleSignIn = async (req, res = responce ) => {
+const googleSignIn = async (req, res = response ) => {
 
     const { id_token } = req.body;
 

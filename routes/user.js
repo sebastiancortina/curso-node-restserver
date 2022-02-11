@@ -5,7 +5,7 @@ const { usuarioGet, usuarioPut, usuarioPost, usuarioDelete } = require('../contr
 const { check } = require('express-validator');
 const { esRoleValido, emailExists, existeUsuarioPorId } = require('../helpers/db-validators');
 
-const { validarCampos, validarJWT, esAdminRole, tieneRole } = require('../middlewares')
+const { validarCampos, validarJWT, esAdminRole, tieneRole } = require('../middlewares');
 
 
 const router = Router();

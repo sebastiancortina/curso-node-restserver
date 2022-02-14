@@ -1,8 +1,47 @@
-const { Router } = require('express');
-const { check } = require('express-validator');
-const { validarCampos } = require('../middlewares/validar-campos');
+const { response } = require('express');
+const { Categoria } = require('../models');
 
-const router = Router();
+const crearCategoria = async (req, res = response) => {
 
+   const nombre = req.body.nombre.toUpperCase();
 
-module.exports = router;
+   const categoriaDB = await Categoria.findOne({nombre});
+
+   if(categoriaDB){
+       return res.status(400).json({
+           msg: "la categoria, ya exite"
+       });
+   }
+
+   // Generar la data a guardar 
+    const data = {
+        nombre,
+        usuario: req.usuario._id
+    }
+
+    const categoria = new Categoria( data );
+
+    // guardar db
+    await categoria.save();
+
+    res.status(201).json(categoria);
+}
+
+const obtenerCategoria = async (req, res = response) => {
+
+}
+
+const actualizarCategorias = async (req, res = response) => {
+
+}
+
+const borrarCategorias = async (req, res = response) => {
+
+}
+
+module.exports = {
+    crearCategoria,
+    obtenerCategoria,
+    actualizarCategorias,
+    borrarCategorias
+};

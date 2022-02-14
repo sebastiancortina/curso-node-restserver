@@ -13,8 +13,8 @@ class Server{
         // rutas 
         this.paths = {
             auth: '/api/auth',
-            usuario: '/api/usuarios',
-            categorias: '/api/categorias'
+            categorias: '/api/categorias',
+            usuario: '/api/usuarios'
         }
 
         // Conectar a la base de datos

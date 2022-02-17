@@ -9,8 +9,8 @@ const crearCategoria = async (req, res = response) => {
 
    if(categoriaDB){
        return res.status(400).json({
-           msg: "la categoria, ya exite"
-       });
+           msg: `la categoria ${ categoriaDB.nombre }, ya exite`
+    });
    }
 
    // Generar la data a guardar 
@@ -27,7 +27,30 @@ const crearCategoria = async (req, res = response) => {
     res.status(201).json(categoria);
 }
 
+const obtenerCategorias = async (req, res = response) => {
+    const { limite = 5, desde = 0 } = req.query;
+    const query = { estado: true };
+
+    const [ total, categoria ] = await Promise.all([
+        Categoria.countDocuments(query),
+        Categoria.find(query)
+            //.populate('usuario','nombre')
+            .skip(Number (desde))
+            .limit(Number(limite))
+    ]);
+
+    res.json({
+        total,
+        categoria
+    })
+}
+
 const obtenerCategoria = async (req, res = response) => {
+
+    const { id } = req.params;
+    const categoria = await Categoria.findById( id );
+
+    res.json( categoria );
 
 }
 
@@ -42,6 +65,7 @@ const borrarCategorias = async (req, res = response) => {
 module.exports = {
     crearCategoria,
     obtenerCategoria,
+    obtenerCategorias,
     actualizarCategorias,
     borrarCategorias
 };

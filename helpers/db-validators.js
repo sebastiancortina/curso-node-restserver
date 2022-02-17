@@ -1,6 +1,7 @@
 
 const Role = require('../models/role'); // colecion de rol 
-const Usuario = require('../models/usuario');
+const {Usuario, Categoria } = require('../models');
+
 
 // Permite validar un rol exitente en la base de datos 
 const esRoleValido = async(rol = '') => {                 
@@ -28,9 +29,20 @@ const existeUsuarioPorId = async(id) => {
     }
 }
 
+// Validadores categorias 
+const existeCategoriaPorId = async (id) => {
+    
+    // Verifica si la categoria existe 
+    const existeCategoria = await Categoria.findById(id);
+    if (! existeCategoria ) {
+        throw new Error(`El id no exite ${ id }`);
+    }
+}
+
 
 module.exports = {
     esRoleValido,
     emailExists, 
-    existeUsuarioPorId
+    existeUsuarioPorId,
+    existeCategoriaPorId
 }

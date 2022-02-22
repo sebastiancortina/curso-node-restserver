@@ -27,8 +27,6 @@ const buscarUsuario = async ( termino = '', res = response ) => {
 
     }
 
-
-
     /*else{
         res.json({
             // Si el usuario no exite devuelve un arreglo vacio 

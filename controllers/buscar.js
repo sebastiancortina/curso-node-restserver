@@ -28,17 +28,6 @@ const buscarUsuario = async ( termino = '', res = response ) => {
 
     }
 
-<<<<<<< HEAD
-    /*else{
-        res.json({
-            // Si el usuario no exite devuelve un arreglo vacio 
-            results: []
-        });
-
-    }*/
-
-=======
->>>>>>> ce96d5a14c00207916087dc4e4527a439e230d89
     const regex = new RegExp( termino, 'i');
 
     const usuarios = await Usuario.find({ 

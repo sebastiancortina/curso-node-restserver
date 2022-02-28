@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const { dbConnection } = require('../database/config');
 const fileupload = require('express-fileUpload');
+const morgan = require('morgan');
 
 class Server{
 
@@ -20,6 +21,9 @@ class Server{
             uploads: '/api/uploads'
         }
 
+        // Permite visualizar las peticiones que estan llegando desde el navegador -con formateado de  texto 
+        this.app.use(morgan('dev'));
+
         // Conectar a la base de datos
         this.conectarDB();
 
@@ -28,6 +32,7 @@ class Server{
         
         // Rutas de mi aplicacion 
         this.routes();
+
     }
 
     async conectarDB(){

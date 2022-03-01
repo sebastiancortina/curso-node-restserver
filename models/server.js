@@ -2,7 +2,7 @@
 const express = require('express');
 const cors = require('cors');
 const { dbConnection } = require('../database/config');
-const fileupload = require('express-fileUpload');
+const fileupload = require('express-fileupload');
 const morgan = require('morgan');
 
 class Server{
